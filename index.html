@@ -4,63 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weisfeiler-Leman Archive</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-        nav {
-            margin-top: 20px;
-        }
-        nav a {
-            text-decoration: none;
-            color: #007bff;
-            margin: 0 10px;
-        }
-
-        .graph-pair {
-            display: flex;
-            justify-content: center;
-            gap: 15%;
-            margin-top: 3rem;
-
-        }
-
-        .graph {
-            width: 400px;
-            height: 400px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.91/build/spline-viewer.js"></script>
 </head>
 <body>
     <header>
     <div class="container">
+        <div class="text-container">
         <h1>Weisfeiler-Leman Archive</h1>
         <p>Welcome to the Weisfeiler-Leman Archive, a collection dedicated to showcasing graphs that are non-isomorphic yet cannot be distinguished by the Weisfeiler-Leman isomorphism test. This archive serves as a resource for researchers, students, and anyone interested in graph theory and its complexities.</p>
-        <nav>
-            <a href="#top">Home</a>
-            <a href="#graphs">Graphs</a>
-            <a href="#!">About</a>
-            <a href="#!">Contact</a>
-        </nav>
+        </div>
+        <spline-viewer class="spline-viewer-large" loading-anim-type="spinner-small-light" url="https://prod.spline.design/vHZarVWNI6MUXm8r/scene.splinecode"></spline-viewer>
+
+        <spline-viewer class="spline-viewer-small" loading-anim-type="spinner-small-light" url="https://prod.spline.design/MxCT02FhS2OJEASh/scene.splinecode"></spline-viewer>
+    </div>
+        <div class="scroll-arrow">
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </header>
 
+    <section id="graphs-section">
     <h2 id="graphs">Graphs</h2>
     <main id="graph-container">
 
     </main>
+    </section>
 
     <script>
 
@@ -73,7 +44,7 @@
         const toNetwork = (edgeList) => {
             const nodes = new vis.DataSet();
             const edges = new vis.DataSet();
-        
+
             edgeList.forEach(([from, to]) => {
                 [from, to].forEach((node) => {
                     if (!nodes.get(node)) {
@@ -107,7 +78,7 @@
             try {
                 const response = await fetch('collisions/graphs.txt')
                 const text = await response.text();
-                
+
                 // Split the text by lines and filter out any empty lines
                 const lines = text.split('\n').filter(line => line.trim() !== '');
                 const collisions = [];
@@ -115,7 +86,7 @@
                 for (let i = 0; i < lines.length; i += 2) {
                     const graph1 = toNetwork(textToList(lines[i]));
                     const graph2 = toNetwork(textToList(lines[i + 1]));
-                    collisions.push([graph1, graph2]);    
+                    collisions.push([graph1, graph2]);
                 }
 
                 const container = document.getElementById('graph-container');
@@ -130,6 +101,20 @@
         }
 
         loadGraphs();
+
+        // Listen for scroll events on the window
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            const graphsSection = document.getElementById('graphs-section');
+
+            const headerBottom = header.offsetTop + header.offsetHeight;
+
+            graphsSection.style.position = 'absolute';
+            graphsSection.style.top = `${headerBottom}px`;
+        });
+
+
+
     </script>
 </body>
 </html>
