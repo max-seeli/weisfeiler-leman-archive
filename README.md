@@ -1,4 +1,5 @@
 # Weisfeiler Leman Archive
+The project aims to provide a comprehensive overview of the Weisfeiler-Leman (WL) graph isomorphism test, focusing on its potential limitations and the existence of counterexamples. The website serves as an interactive portal where users can explore detailed examples of graph collisions identified by the WL test, including visual representations and technical descriptions.
 
 ## Website Features
 
@@ -12,7 +13,7 @@ Visit the website at [https://max-seeli.github.io/weisfeiler-leman-archive/](htt
 
 ## Code Repository
 
-This repository also contains the source code used for finding WL test collisions. 
+This repository is split into two major parts. The source code used for finding WL test collisions is located in the `src` directory, while the website content is stored in the `docs` directory. 
 
 ### Getting Started
 
